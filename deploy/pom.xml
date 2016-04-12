@@ -12,6 +12,10 @@
     <artifactId>pente-graph-deploy</artifactId>
     <name>Pente.org Game Database Graph: Deployment</name>
 
+    <properties>
+        <visallo.dir>${project.basedir}/../work</visallo.dir>
+    </properties>
+
     <dependencies>
         <dependency>
             <groupId>org.visallo</groupId>
@@ -35,7 +39,7 @@
                     <execution>
                         <id>copy-war</id>
                         <configuration>
-                            <outputDirectory>${project.basedir}/target/war</outputDirectory>
+                            <outputDirectory>${visallo.dir}/war</outputDirectory>
                             <artifactItems>
                                 <artifactItem>
                                     <groupId>org.visallo</groupId>
@@ -53,12 +57,54 @@
                     <execution>
                         <id>copy-libs</id>
                         <configuration>
-                            <outputDirectory>${project.basedir}/target/lib</outputDirectory>
+                            <outputDirectory>${visallo.dir}/lib</outputDirectory>
                             <excludeClassifiers>war</excludeClassifiers>
                         </configuration>
                         <phase>package</phase>
                         <goals>
                             <goal>copy-dependencies</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>copy-visallo-configs</id>
+                        <configuration>
+                            <outputDirectory>${visallo.dir}/config</outputDirectory>
+                            <artifactItems>
+                                <artifactItem>
+                                    <groupId>org.visallo</groupId>
+                                    <artifactId>visallo-config-example</artifactId>
+                                    <version>${visallo.version}</version>
+                                    <classifier>config</classifier>
+                                    <type>tgz</type>
+                                </artifactItem>
+                            </artifactItems>
+                        </configuration>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>unpack</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-resources-plugin</artifactId>
+                <version>${plugin.maven.resources.version}</version>
+                <executions>
+                    <execution>
+                        <id>copy-local-configs</id>
+                        <configuration>
+                            <outputDirectory>${visallo.dir}/config</outputDirectory>
+                            <resources>
+                                <resource>
+                                    <directory>${project.basedir}/../config</directory>
+                                    <filtering>false</filtering>
+                                </resource>
+                            </resources>
+                        </configuration>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>copy-resources</goal>
                         </goals>
                     </execution>
                 </executions>

@@ -2,5 +2,5 @@
 *.iml
 target
 .DS_Store
-/datastore
+/work
 config/z-user.properties

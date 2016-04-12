@@ -18,6 +18,7 @@
         <java.source.version>1.8</java.source.version>
         <java.target.version>1.8</java.target.version>
         <visallo.version>1.1-SNAPSHOT</visallo.version>
+        <visallo.dir>${project.basedir}/work</visallo.dir>
     </properties>
 
     <modules>
@@ -33,7 +34,7 @@
                 <version>9.3.8.v20160314</version>
                 <inherited>false</inherited>
                 <configuration>
-                    <war>${project.basedir}/deploy/target/war/visallo-web-war-1.1-SNAPSHOT.war</war>
+                    <war>${visallo.dir}/war/visallo-web-war-1.1-SNAPSHOT.war</war>
                     <scanIntervalSeconds>10</scanIntervalSeconds>
                 </configuration>
             </plugin>
