@@ -23,6 +23,12 @@
             <version>${visallo.version}</version>
         </dependency>
         <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>javax.servlet-api</artifactId>
+            <version>${javax.servlet.api.version}</version>
+            <scope>runtime</scope>
+        </dependency>
+        <dependency>
             <groupId>org.visallo</groupId>
             <artifactId>pente-graph-gpw</artifactId>
             <version>${project.version}</version>
