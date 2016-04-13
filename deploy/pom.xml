@@ -54,6 +54,8 @@
                                     <type>war</type>
                                 </artifactItem>
                             </artifactItems>
+                            <useBaseVersion>true</useBaseVersion>
+                            <overWriteSnapshots>true</overWriteSnapshots>
                         </configuration>
                         <phase>package</phase>
                         <goals>
@@ -65,6 +67,7 @@
                         <configuration>
                             <outputDirectory>${visallo.dir}/lib</outputDirectory>
                             <excludeClassifiers>war</excludeClassifiers>
+                            <overWriteSnapshots>true</overWriteSnapshots>
                         </configuration>
                         <phase>package</phase>
                         <goals>
@@ -84,6 +87,7 @@
                                     <type>tgz</type>
                                 </artifactItem>
                             </artifactItems>
+                            <overWriteSnapshots>true</overWriteSnapshots>
                         </configuration>
                         <phase>package</phase>
                         <goals>
