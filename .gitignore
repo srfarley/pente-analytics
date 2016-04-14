@@ -1,6 +1,8 @@
-.idea
+.idea/*
+!.idea/runConfigurations/
 *.iml
 target
 .DS_Store
+/data
 /work
 config/z-user.properties
