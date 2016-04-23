@@ -4,7 +4,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
         <artifactId>pente-graph</artifactId>
-        <groupId>org.visallo</groupId>
+        <groupId>us.pente</groupId>
         <version>0.1-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
@@ -29,8 +29,8 @@
             <scope>runtime</scope>
         </dependency>
         <dependency>
-            <groupId>org.visallo</groupId>
-            <artifactId>pente-graph-gpw</artifactId>
+            <groupId>us.pente</groupId>
+            <artifactId>pente-graph-worker</artifactId>
             <version>${project.version}</version>
         </dependency>
     </dependencies>
