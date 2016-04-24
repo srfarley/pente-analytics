@@ -32,6 +32,7 @@ public class PenteGameImportWorkerTest {
     private VisibilityTranslator visibilityTranslator;
     private User user;
     private Vertex archiveVertex;
+    private Visibility visibility;
 
     @Before
     public void before() throws Exception {
@@ -39,23 +40,49 @@ public class PenteGameImportWorkerTest {
         authorizations = new InMemoryAuthorizations();
         visibilityTranslator = new DirectVisibilityTranslator();
 
-        Visibility visibility = visibilityTranslator.getDefaultVisibility();
+        visibility = visibilityTranslator.getDefaultVisibility();
         archiveVertex = graph.addVertex(visibility, authorizations);
         InputStream archiveIn = getClass().getResource("/games.zip").openStream();
         StreamingPropertyValue value = new StreamingPropertyValue(archiveIn, byte[].class);
         VisalloProperties.RAW.setProperty(archiveVertex, value, visibility, authorizations);
+        VisalloProperties.MIME_TYPE.addPropertyValue(archiveVertex, "", "application/zip", visibility, authorizations);
 
         user = Mockito.mock(User.class);
         Mockito.when(user.getUserId()).thenReturn("user_id");
     }
 
     @Test
+    public void isHandledReturnsTrueForRawPropertyWithZipMimeType() throws Exception {
+        PenteGameImportWorker worker = createWorker();
+
+        boolean handled = worker.isHandled(archiveVertex, VisalloProperties.RAW.getProperty(archiveVertex));
+
+        assertThat(handled, is(true));
+    }
+
+    @Test
+    public void isHandledReturnsFalseForRawPropertyWithOtherMimeType() throws Exception {
+        PenteGameImportWorker worker = createWorker();
+
+        VisalloProperties.MIME_TYPE.removeProperty(archiveVertex, "", authorizations);
+        VisalloProperties.MIME_TYPE.addPropertyValue(
+                archiveVertex, "", "application/octet-stream", visibility, authorizations);
+
+        boolean handled = worker.isHandled(archiveVertex, VisalloProperties.RAW.getProperty(archiveVertex));
+
+        assertThat(handled, is(false));
+    }
+
+    @Test
+    public void isHandledReturnsFalseForNullProperty() throws Exception {
+        PenteGameImportWorker worker = createWorker();
+
+        assertThat(worker.isHandled(archiveVertex, null), is(false));
+    }
+
+    @Test
     public void executeShouldCreateGraphElementsFromGameArchiveVertex() throws Exception {
-        GraphPropertyWorkerPrepareData prepareData = new GraphPropertyWorkerPrepareData(
-                null, null, user, authorizations, null);
-        PenteGameImportWorker worker = new PenteGameImportWorker(visibilityTranslator);
-        worker.setGraph(graph);
-        worker.prepare(prepareData);
+        PenteGameImportWorker worker = createWorker();
         GraphPropertyWorkData workData = new GraphPropertyWorkData(
                 visibilityTranslator, archiveVertex, null, null, "", Priority.NORMAL);
 
@@ -91,5 +118,14 @@ public class PenteGameImportWorkerTest {
 
         EdgeVertexPair loss = losses.stream().findAny().orElse(null);
         assertThat(loss.getVertex().getPropertyValue(ONTOLOGY_BASE_IRI + "playerName"), is ("batman"));
+    }
+
+    private PenteGameImportWorker createWorker() throws Exception {
+        GraphPropertyWorkerPrepareData prepareData = new GraphPropertyWorkerPrepareData(
+                null, null, user, authorizations, null);
+        PenteGameImportWorker worker = new PenteGameImportWorker(visibilityTranslator);
+        worker.setGraph(graph);
+        worker.prepare(prepareData);
+        return worker;
     }
 }

@@ -48,7 +48,8 @@ public class PenteGameImportWorker extends GraphPropertyWorker {
 
     @Override
     public boolean isHandled(Element element, Property property) {
-        return RAW.getPropertyName().equals(property.getName()) &&
+        return property != null &&
+                RAW.getPropertyName().equals(property.getName()) &&
                 "application/zip".equals(MIME_TYPE.getOnlyPropertyValue(element));
     }
 
