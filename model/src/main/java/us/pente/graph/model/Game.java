@@ -36,6 +36,8 @@ import java.util.stream.Stream;
  */
 public class Game implements Mappable {
     private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("MM/dd/yyyy");
+    private static final String PLAYER_1_WIN_RESULT = "1-0";
+    private static final String PLAYER_2_WIN_RESULT = "0-1";
 
     public String id;
     @SerializedName("gameName")
@@ -55,9 +57,19 @@ public class Game implements Mappable {
     public PlayerType player1Type;
     public PlayerType player2Type;
     public String result;
+    public String winner;
+    public String loser;
     public List<Move> moves;
 
     public Game() {
+    }
+
+    public boolean isWinner(String playerName) {
+        return playerName.equals(winner);
+    }
+
+    public boolean isLoser(String playerName) {
+        return playerName.equals(loser);
     }
 
     public static Game parse(String id, Stream<String> lines) {
@@ -74,6 +86,8 @@ public class Game implements Mappable {
                 setProperty(game, Property.parse(line));
             }
         });
+        game.winner = winner(game.player1Name, game.player2Name, game.result);
+        game.loser = loser(game.player1Name, game.player2Name, game.result);
         game.moves = Move.parse(moveLines);
         return game;
     }
@@ -131,6 +145,26 @@ public class Game implements Mappable {
                     break;
             }
         }
+    }
+
+    private static String winner(String player1Name, String player2Name, String result) {
+        String winner = "";
+        if (PLAYER_1_WIN_RESULT.equals(result)) {
+            winner = player1Name;
+        } else if (PLAYER_2_WIN_RESULT.equals(result)) {
+            winner = player2Name;
+        }
+        return winner;
+    }
+
+    private static String loser(String player1Name, String player2Name, String result) {
+        String loser = "";
+        if (PLAYER_2_WIN_RESULT.equals(result)) {
+            loser = player1Name;
+        } else if (PLAYER_1_WIN_RESULT.equals(result)) {
+            loser = player2Name;
+        }
+        return loser;
     }
 
     private static class Property {

@@ -33,10 +33,20 @@
 
 
 
-    <!-- http://pente.us/pente#playedGame -->
+    <!-- http://pente.us/pente#wonGame -->
 
-    <owl:ObjectProperty rdf:about="http://pente.us/pente#playedGame">
-        <rdfs:label>Played Game</rdfs:label>
+    <owl:ObjectProperty rdf:about="http://pente.us/pente#wonGame">
+        <rdfs:label>Won Game</rdfs:label>
+        <rdfs:domain rdf:resource="http://pente.us/pente#player"/>
+        <rdfs:range rdf:resource="http://pente.us/pente#game"/>
+    </owl:ObjectProperty>
+
+
+
+    <!-- http://pente.us/pente#lostGame -->
+
+    <owl:ObjectProperty rdf:about="http://pente.us/pente#lostGame">
+        <rdfs:label>Lost Game</rdfs:label>
         <rdfs:domain rdf:resource="http://pente.us/pente#player"/>
         <rdfs:range rdf:resource="http://pente.us/pente#game"/>
     </owl:ObjectProperty>
@@ -268,6 +278,28 @@
 
 
 
+    <!-- http://pente.us/pente#winner -->
+
+    <owl:DatatypeProperty rdf:about="http://pente.us/pente#winner">
+        <rdfs:label>Winner</rdfs:label>
+        <visallo:textIndexHints>EXACT_MATCH</visallo:textIndexHints>
+        <rdfs:domain rdf:resource="http://pente.us/pente#game"/>
+        <rdfs:range rdf:resource="&xsd;string"/>
+    </owl:DatatypeProperty>
+
+
+
+    <!-- http://pente.us/pente#loser -->
+
+    <owl:DatatypeProperty rdf:about="http://pente.us/pente#loser">
+        <rdfs:label>Loser</rdfs:label>
+        <visallo:textIndexHints>EXACT_MATCH</visallo:textIndexHints>
+        <rdfs:domain rdf:resource="http://pente.us/pente#game"/>
+        <rdfs:range rdf:resource="&xsd;string"/>
+    </owl:DatatypeProperty>
+
+
+
     <!-- http://pente.us/pente#playerName -->
 
     <owl:DatatypeProperty rdf:about="http://pente.us/pente#playerName">
@@ -286,6 +318,7 @@
         <rdfs:domain rdf:resource="http://pente.us/pente#player"/>
         <rdfs:range rdf:resource="&xsd;integer"/>
     </owl:DatatypeProperty>
+
 
 
     <!-- http://pente.us/pente#playerType -->
@@ -369,9 +402,9 @@
         <rdfs:label>Game</rdfs:label>
         <visallo:glyphIconFileName>game.png</visallo:glyphIconFileName>
         <visallo:titleFormula>
-            prop(&apos;http://pente.us/pente#gameName&apos;) +
-            " game at " +
-            prop(&apos;http://pente.us/pente#dateTime&apos;)
+            prop(&apos;http://pente.us/pente#player1Name&apos;) +
+            "-" +
+            prop(&apos;http://pente.us/pente#player2Name&apos;)
         </visallo:titleFormula>
     </owl:Class>
 

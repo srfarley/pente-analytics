@@ -64,6 +64,8 @@ public class GameTest {
         assertThat(game.player1Type, is(PlayerType.HUMAN));
         assertThat(game.player2Type, is(PlayerType.COMPUTER));
         assertThat(game.result, is("0-1"));
+        assertThat(game.winner, is("superman"));
+        assertThat(game.loser, is("batman"));
         List<Move> moves = game.moves;
         assertThat(moves.size(), is(19));
         Move move1 = moves.get(0);
@@ -73,6 +75,15 @@ public class GameTest {
         Move move19 = moves.get(18);
         assertThat(move19.player1, is("J6"));
         assertThat(move19.player2, is("L4"));
+    }
+
+    @Test
+    public void isWinnerAndisLoserShouldReturnCorrectResults() {
+        Game game = Game.parse(GAME_ID, lines);
+        assertThat(game.isWinner("superman"), is(true));
+        assertThat(game.isWinner("batman"), is(false));
+        assertThat(game.isLoser("superman"), is(false));
+        assertThat(game.isLoser("batman"), is(true));
     }
 
     @Test
@@ -93,9 +104,11 @@ public class GameTest {
 
         Map<String, Object> map = game.toMap();
 
-        assertThat(map.size(), is(18));
+        assertThat(map.size(), is(20));
         assertThat(map.get("gameName"), is("Pente"));
         assertThat(map.get("player1Name"), is("batman"));
         assertThat(map.get("player2Name"), is("superman"));
+        assertThat(map.get("winner"), is("superman"));
+        assertThat(map.get("loser"), is("batman"));
     }
 }

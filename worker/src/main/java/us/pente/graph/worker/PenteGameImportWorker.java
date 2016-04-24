@@ -73,7 +73,7 @@ public class PenteGameImportWorker extends GraphPropertyWorker {
     }
 
     private void createGameVertex(Game game, Authorizations authorizations) {
-        VertexBuilder gameBuilder = getGraph().prepareVertex(game.id, visibility);
+        VertexBuilder gameBuilder = getGraph().prepareVertex("GAME_" + game.id, visibility);
         setPropertiesOnElement(gameBuilder, game, ImmutableSet.of("id", "date", "time", "moves"));
         VisalloProperties.CONCEPT_TYPE.setProperty(gameBuilder, ONTOLOGY_BASE_IRI + "game", visibility);
         setDateTimePropertyOnElement(gameBuilder, game);
@@ -84,15 +84,15 @@ public class PenteGameImportWorker extends GraphPropertyWorker {
                 game.player1Name, game.player1Rating, game.player1Type, game.id, authorizations);
         Vertex player2Vertex = findOrCreatePlayerVertex(
                 game.player2Name, game.player2Rating, game.player2Type, game.id, authorizations);
-        createPlayerToGameEdge(gameVertex, player1Vertex, authorizations);
-        createPlayerToGameEdge(gameVertex, player2Vertex, authorizations);
+        createPlayerToGameEdge(gameVertex, player1Vertex, game.isWinner(game.player1Name), authorizations);
+        createPlayerToGameEdge(gameVertex, player2Vertex, game.isWinner(game.player2Name), authorizations);
     }
 
     private Vertex findOrCreatePlayerVertex(
             String name, int rating, PlayerType type, String gameId, Authorizations authorizations) {
         Vertex playerVertex = getGraph().getVertex(name, authorizations);
         if (playerVertex == null) {
-            VertexBuilder playerBuilder = getGraph().prepareVertex(name, visibility);
+            VertexBuilder playerBuilder = getGraph().prepareVertex("PLAYER_" + name, visibility);
             VisalloProperties.CONCEPT_TYPE.setProperty(playerBuilder, ONTOLOGY_BASE_IRI + "player", visibility);
             Mappable playerProperties = new Mappable() {
                 @Override
@@ -118,8 +118,10 @@ public class PenteGameImportWorker extends GraphPropertyWorker {
         }
     }
 
-    private void createPlayerToGameEdge(Vertex gameVertex, Vertex playerVertex, Authorizations authorizations) {
-        getGraph().addEdge(playerVertex, gameVertex, ONTOLOGY_BASE_IRI + "playedGame", visibility, authorizations);
+    private void createPlayerToGameEdge(
+            Vertex gameVertex, Vertex playerVertex, boolean isWinner, Authorizations authorizations) {
+        String edgeLabel = isWinner ? "wonGame" : "lostGame";
+        getGraph().addEdge(playerVertex, gameVertex, ONTOLOGY_BASE_IRI + edgeLabel, visibility, authorizations);
     }
 
     @SuppressWarnings("unchecked")
