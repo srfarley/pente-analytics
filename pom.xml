@@ -39,6 +39,7 @@
     <modules>
         <module>deploy</module>
         <module>model</module>
+        <module>web</module>
         <module>worker</module>
     </modules>
 
