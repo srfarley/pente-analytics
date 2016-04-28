@@ -37,6 +37,7 @@
     </repositories>
 
     <modules>
+        <module>auth</module>
         <module>deploy</module>
         <module>model</module>
         <module>web</module>
