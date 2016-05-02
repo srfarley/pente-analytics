@@ -92,7 +92,7 @@ define([
             }).fail(function(xhr, status, error) {
                 self.submitting = false;
                 if (xhr.status === 403) {
-                    error = 'Invalid Username / Password';
+                    error = i18n('us.pente.graph.auth.invalid');
                 }
                 $error.text(error);
                 self.enableButton(true);
