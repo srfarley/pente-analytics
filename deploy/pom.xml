@@ -129,6 +129,21 @@
                     </execution>
                 </executions>
             </plugin>
+            <plugin>
+                <artifactId>maven-clean-plugin</artifactId>
+                <version>${plugin.maven.clean.version}</version>
+                <configuration>
+                    <filesets>
+                        <fileset>
+                            <directory>${visallo.dir}</directory>
+                            <excludes>
+                                <exclude>datastore/**</exclude>
+                            </excludes>
+                            <followSymlinks>false</followSymlinks>
+                        </fileset>
+                    </filesets>
+                </configuration>
+            </plugin>
         </plugins>
     </build>
 </project>
