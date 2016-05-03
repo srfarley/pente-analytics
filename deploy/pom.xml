@@ -14,6 +14,7 @@
 
     <properties>
         <visallo.dir>${project.basedir}/../work</visallo.dir>
+        <plugin.replacer.version>1.5.3</plugin.replacer.version>
     </properties>
 
     <dependencies>
@@ -126,6 +127,29 @@
                         <goals>
                             <goal>copy-resources</goal>
                         </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>com.google.code.maven-replacer-plugin</groupId>
+                <artifactId>replacer</artifactId>
+                <version>${plugin.replacer.version}</version>
+                <executions>
+                    <execution>
+                        <id>replace-debug-log-levels</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>replace</goal>
+                        </goals>
+                        <configuration>
+                            <file>${visallo.dir}/config/log4j.xml</file>
+                            <replacements>
+                                <replacement>
+                                    <token>value="DEBUG"</token>
+                                    <value>value="INFO"</value>
+                                </replacement>
+                            </replacements>
+                        </configuration>
                     </execution>
                 </executions>
             </plugin>
