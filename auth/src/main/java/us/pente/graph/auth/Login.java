@@ -109,20 +109,27 @@ public class Login implements ParameterizedHandler {
         // http://stackoverflow.com/questions/34110426/does-java-support-lets-encrypt-certificates
         // https://community.letsencrypt.org/t/will-the-cross-root-cover-trust-by-the-default-list-in-the-jdk-jre/134/40
         try {
-            // Certificate downloaded from https://letsencrypt.org/certs/lets-encrypt-x1-cross-signed.der
-            InputStream fis = Login.class.getResourceAsStream("lets-encrypt-x1-cross-signed.der");
-            Certificate ca = CertificateFactory.getInstance("X.509").generateCertificate(fis);
+            // Certificates downloaded from https://letsencrypt.org/certs/lets-encrypt-x{1-3}-cross-signed.der
+            final String[] certResources = new String[]{
+                    "lets-encrypt-x1-cross-signed.der",
+                    "lets-encrypt-x2-cross-signed.der",
+                    "lets-encrypt-x3-cross-signed.der"
+            };
+            KeyStore keyStore = KeyStore.getInstance(KeyStore.getDefaultType());
+            keyStore.load(null, null);
+            int entryNumber = 1;
+            for (String certResource : certResources) {
+                InputStream in = Login.class.getResourceAsStream(certResource);
+                Certificate cert = CertificateFactory.getInstance("X.509").generateCertificate(in);
+                keyStore.setCertificateEntry(Integer.toString(entryNumber++), cert);
+            }
+            TrustManagerFactory trustManagerFactory =
+                    TrustManagerFactory.getInstance(TrustManagerFactory.getDefaultAlgorithm());
+            trustManagerFactory.init(keyStore);
 
-            KeyStore ks = KeyStore.getInstance(KeyStore.getDefaultType());
-            ks.load(null, null);
-            ks.setCertificateEntry(Integer.toString(1), ca);
-
-            TrustManagerFactory tmf = TrustManagerFactory.getInstance(TrustManagerFactory.getDefaultAlgorithm());
-            tmf.init(ks);
-
-            SSLContext ctx = SSLContext.getInstance("TLS");
-            ctx.init(null, tmf.getTrustManagers(), null);
-            return ctx.getSocketFactory();
+            SSLContext sslContext = SSLContext.getInstance("TLS");
+            sslContext.init(null, trustManagerFactory.getTrustManagers(), null);
+            return sslContext.getSocketFactory();
         } catch (Exception e) {
             throw Throwables.propagate(e);
         }
