@@ -17,17 +17,14 @@
         <dependency>
             <groupId>org.visallo</groupId>
             <artifactId>visallo-core</artifactId>
-            <version>1.1-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>us.pente</groupId>
             <artifactId>pente-graph-model</artifactId>
-            <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>org.vertexium</groupId>
             <artifactId>vertexium-inmemory</artifactId>
-            <version>${vertexium.version}</version>
             <scope>test</scope>
         </dependency>
     </dependencies>

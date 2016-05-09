@@ -48,16 +48,61 @@
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
-            <version>${junit.version}</version>
+            <version>4.12</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.mockito</groupId>
             <artifactId>mockito-core</artifactId>
-            <version>${mockito.version}</version>
+            <version>1.10.19</version>
             <scope>test</scope>
         </dependency>
     </dependencies>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>us.pente</groupId>
+                <artifactId>pente-graph-auth</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>us.pente</groupId>
+                <artifactId>pente-graph-deploy</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>us.pente</groupId>
+                <artifactId>pente-graph-model</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>us.pente</groupId>
+                <artifactId>pente-graph-web</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>us.pente</groupId>
+                <artifactId>pente-graph-worker</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.visallo</groupId>
+                <artifactId>visallo-core</artifactId>
+                <version>${visallo.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.visallo</groupId>
+                <artifactId>visallo-web</artifactId>
+                <version>${visallo.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.visallo</groupId>
+                <artifactId>visallo-dev-jetty-server</artifactId>
+                <version>${visallo.version}</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
 
     <build>
         <plugins>
@@ -67,7 +112,7 @@
                 <version>9.3.8.v20160314</version>
                 <inherited>false</inherited>
                 <configuration>
-                    <war>${visallo.dir}/war/visallo-web-war-1.1-SNAPSHOT.war</war>
+                    <war>${visallo.dir}/war/visallo-web-war-${visallo.version}.war</war>
                     <scanIntervalSeconds>10</scanIntervalSeconds>
                 </configuration>
             </plugin>
