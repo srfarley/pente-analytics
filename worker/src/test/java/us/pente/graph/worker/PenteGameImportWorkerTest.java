@@ -12,6 +12,7 @@ import org.visallo.core.ingest.graphProperty.GraphPropertyWorkData;
 import org.visallo.core.ingest.graphProperty.GraphPropertyWorkerPrepareData;
 import org.visallo.core.model.properties.VisalloProperties;
 import org.visallo.core.model.workQueue.Priority;
+import org.visallo.core.model.workspace.WorkspaceRepository;
 import org.visallo.core.security.DirectVisibilityTranslator;
 import org.visallo.core.security.VisibilityTranslator;
 import org.visallo.core.user.User;
@@ -33,6 +34,7 @@ public class PenteGameImportWorkerTest {
     private User user;
     private Vertex archiveVertex;
     private Visibility visibility;
+    private WorkspaceRepository workspaceRepository;
 
     @Before
     public void before() throws Exception {
@@ -47,6 +49,7 @@ public class PenteGameImportWorkerTest {
         VisalloProperties.RAW.setProperty(archiveVertex, value, visibility, authorizations);
         VisalloProperties.MIME_TYPE.addPropertyValue(archiveVertex, "", "application/zip", visibility, authorizations);
 
+        workspaceRepository = Mockito.mock(WorkspaceRepository.class);
         user = Mockito.mock(User.class);
         Mockito.when(user.getUserId()).thenReturn("user_id");
     }
@@ -125,6 +128,7 @@ public class PenteGameImportWorkerTest {
                 null, null, user, authorizations, null);
         PenteGameImportWorker worker = new PenteGameImportWorker(visibilityTranslator);
         worker.setGraph(graph);
+        worker.setWorkspaceRepository(workspaceRepository);
         worker.prepare(prepareData);
         return worker;
     }

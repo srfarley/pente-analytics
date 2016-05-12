@@ -14,6 +14,8 @@ import org.visallo.core.model.Name;
 import org.visallo.core.model.properties.VisalloProperties;
 import org.visallo.core.model.properties.types.*;
 import org.visallo.core.security.VisibilityTranslator;
+import org.visallo.web.clientapi.model.ClientApiPublishItem;
+import org.visallo.web.clientapi.model.ClientApiVertexPublishItem;
 import org.visallo.web.clientapi.model.VisibilityJson;
 import us.pente.graph.model.*;
 
@@ -29,8 +31,7 @@ import java.util.Set;
 import java.util.stream.Stream;
 import java.util.zip.ZipFile;
 
-import static org.visallo.core.model.properties.VisalloProperties.MIME_TYPE;
-import static org.visallo.core.model.properties.VisalloProperties.RAW;
+import static org.visallo.core.model.properties.VisalloProperties.*;
 
 @Name("Pente Game Import")
 @Description("Imports Pente.org game files (.zip)")
@@ -49,28 +50,28 @@ public class PenteGameImportWorker extends GraphPropertyWorker {
     @Override
     public boolean isHandled(Element element, Property property) {
         return property != null &&
+                element instanceof Vertex &&
+                !CONCEPT_TYPE.hasProperty(element) &&
                 RAW.getPropertyName().equals(property.getName()) &&
                 "application/zip".equals(MIME_TYPE.getOnlyPropertyValue(element));
     }
 
     @Override
-    public void execute(InputStream inputStream, GraphPropertyWorkData data) throws Exception {
-        Element element = data.getElement();
-        StreamingPropertyValue raw = VisalloProperties.RAW.getPropertyValue(element);
+    public void execute(InputStream inputStream, GraphPropertyWorkData workData) throws Exception {
+        Authorizations authorizations = getAuthorizations();
+        Vertex archiveVertex = (Vertex) workData.getElement();
+        StreamingPropertyValue raw = VisalloProperties.RAW.getPropertyValue(archiveVertex);
         Path zipPath = copyToTempFile(raw);
         try (ZipFile zipFile = new ZipFile(zipPath.toFile())) {
-            VisalloProperties.CONCEPT_TYPE.setProperty(
-                    element, ONTOLOGY_BASE_IRI + "gameArchive", visibility, getAuthorizations());
+            CONCEPT_TYPE.setProperty(
+                    archiveVertex, ONTOLOGY_BASE_IRI + "gameArchive", propertyMetadata(), visibility, authorizations);
+            getGraph().flush();
+            publishVertex(archiveVertex, workData);
             Stream<Game> games = GameArchive.parse(zipFile);
-            createGraph(games, getAuthorizations());
+            games.forEach(game -> createGameVertex(game, authorizations));
         } finally {
             Files.delete(zipPath);
         }
-        getGraph().flush();
-    }
-
-    private void createGraph(Stream<Game> games, Authorizations authorizations) {
-        games.forEach(game -> createGameVertex(game, authorizations));
     }
 
     private void createGameVertex(Game game, Authorizations authorizations) {
@@ -87,6 +88,7 @@ public class PenteGameImportWorker extends GraphPropertyWorker {
                 game.player2Name, game.player2Rating, game.player2Type, game.id, authorizations);
         createPlayerToGameEdge(gameVertex, player1Vertex, game.isWinner(game.player1Name), authorizations);
         createPlayerToGameEdge(gameVertex, player2Vertex, game.isWinner(game.player2Name), authorizations);
+        getGraph().flush();
     }
 
     private Vertex findOrCreatePlayerVertex(
@@ -174,6 +176,17 @@ public class PenteGameImportWorker extends GraphPropertyWorker {
 
     private Metadata propertyMetadata() {
         return new PropertyMetadata(getUser(), new VisibilityJson(), visibility).createMetadata();
+    }
+
+    private void publishVertex(Vertex vertex, GraphPropertyWorkData data) throws InterruptedException {
+        ClientApiVertexPublishItem vertexPublishItem = new ClientApiVertexPublishItem();
+        vertexPublishItem.setVertexId(vertex.getId());
+        vertexPublishItem.setAction(ClientApiPublishItem.Action.ADD_OR_UPDATE);
+        // Sleeping seems to work around an org.elasticsearch.index.engine.VersionConflictEngineException thrown by ES
+        // on a separate thread when the vertex is published.
+        Thread.sleep(1000);
+        getWorkspaceRepository().publish(
+                new ClientApiPublishItem[]{vertexPublishItem}, data.getWorkspaceId(), getAuthorizations());
     }
 
     private Path copyToTempFile(StreamingPropertyValue spv) throws IOException {
