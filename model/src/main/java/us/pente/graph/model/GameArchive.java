@@ -6,6 +6,7 @@ import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
 import java.util.List;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
@@ -34,6 +35,10 @@ public class GameArchive {
                 zipPath.toFile().delete();
             }
         }
+    }
+
+    public static List<Game> toList(Stream<Game> games) {
+        return games.collect(Collectors.toList());
     }
 
     private static Game parseGame(ZipFile zipFile, ZipEntry zipEntry) {

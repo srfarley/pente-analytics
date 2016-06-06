@@ -40,6 +40,7 @@
         <module>auth</module>
         <module>deploy</module>
         <module>model</module>
+        <module>spark</module>
         <module>web</module>
         <module>worker</module>
     </modules>
