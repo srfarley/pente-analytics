@@ -1,9 +1,10 @@
 package us.pente.graph.model;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
+import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.StandardCopyOption;
+import java.util.List;
 import java.util.regex.Pattern;
 import java.util.stream.Stream;
 import java.util.zip.ZipEntry;
@@ -16,17 +17,40 @@ public class GameArchive {
 
     public static Stream<Game> parse(ZipFile zipFile) {
         return zipFile.stream()
-                .filter(zipEntry -> GAME_FILE_PATTERN.matcher(zipEntry.getName()).matches())
+                .filter(GameArchive::isGame)
                 .map(zipEntry -> parseGame(zipFile, zipEntry));
+    }
+
+    public static Stream<Game> parse(InputStream inputStream) {
+        Path zipPath = null;
+        try {
+            zipPath = File.createTempFile(GameArchive.class.getSimpleName(), ".zip").toPath();
+            Files.copy(inputStream, zipPath, StandardCopyOption.REPLACE_EXISTING);
+            return parse(new ZipFile(zipPath.toFile()));
+        } catch (IOException ex) {
+            throw new RuntimeException(ex);
+        } finally {
+            if (zipPath != null) {
+                zipPath.toFile().delete();
+            }
+        }
     }
 
     private static Game parseGame(ZipFile zipFile, ZipEntry zipEntry) {
         try (InputStream inputStream = zipFile.getInputStream(zipEntry);
              BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream))) {
-            String id = zipEntry.getName().split("/")[1];
-            return Game.parse(id, reader.lines());
+            return parseGame(zipEntry, reader);
         } catch (IOException ex) {
             throw new RuntimeException(ex);
         }
+    }
+
+    private static Game parseGame(ZipEntry zipEntry, BufferedReader reader) {
+        String id = zipEntry.getName().split("/")[1];
+        return Game.parse(id, reader.lines());
+    }
+
+    private static boolean isGame(ZipEntry zipEntry) {
+        return GAME_FILE_PATTERN.matcher(zipEntry.getName()).matches();
     }
 }
