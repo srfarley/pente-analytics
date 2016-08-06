@@ -34,7 +34,7 @@ class GameRelation(override val sqlContext: SQLContext, private val location: St
     StructField("result", StringType, nullable = false, Metadata.empty),
     StructField("winner", StringType, nullable = false, Metadata.empty),
     StructField("loser", StringType, nullable = false, Metadata.empty),
-    StructField("moves", DataTypes.createArrayType(StringType), nullable = false, Metadata.empty)
+    StructField("moves", DataTypes.createArrayType(StringType, false), nullable = false, Metadata.empty)
   ))
 
   override def schema: StructType = {
@@ -43,7 +43,7 @@ class GameRelation(override val sqlContext: SQLContext, private val location: St
 
   override def buildScan(): RDD[Row] = {
     val filesRDD = sqlContext.sparkContext.binaryFiles(location)
-    filesRDD.flatMap(gameRows(_))
+    filesRDD.flatMap(gameRows)
   }
 
   private def gameRows(tuple: (String, PortableDataStream)): Iterable[Row] = {
@@ -58,8 +58,8 @@ class GameRelation(override val sqlContext: SQLContext, private val location: St
           game.event,
           game.round,
           game.section,
-          new Date(new java.util.Date().getTime), //game.date,
-          new Timestamp(new java.util.Date().getTime), //game.time,
+          Date.valueOf(game.date),
+          Timestamp.valueOf(game.time.atDate(game.date)),
           game.timeControl,
           game.rated,
           game.player1Name,
@@ -69,7 +69,7 @@ class GameRelation(override val sqlContext: SQLContext, private val location: St
           game.result,
           game.winner,
           game.loser,
-          Seq("M1", "M2", "M3", "M4") // game.moves
+          game.moves.map(move => move.number + " " + move.player1 + " " + move.player2)
         )))
     } finally {
       inputStream.close()

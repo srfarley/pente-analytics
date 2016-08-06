@@ -5,6 +5,6 @@ import org.apache.spark.sql.sources.{BaseRelation, RelationProvider}
 
 class DefaultSource extends RelationProvider {
   override def createRelation(sqlContext: SQLContext, parameters: Map[String, String]): BaseRelation = {
-    new GameRelation(sqlContext, parameters.get("path").get)
+    new GameRelation(sqlContext, parameters("path"))
   }
 }
