@@ -3,14 +3,14 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
-        <artifactId>pente-graph</artifactId>
+        <artifactId>pente-visallo</artifactId>
         <groupId>us.pente</groupId>
         <version>0.1-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>pente-graph-deploy</artifactId>
-    <name>Pente.org Game Database Graph: Deployment</name>
+    <artifactId>pente-visallo-deploy</artifactId>
+    <name>Pente.org Game Database Analytics: Visallo: Deployment</name>
 
     <properties>
         <visallo.dir>${project.basedir}/../work</visallo.dir>
@@ -28,15 +28,15 @@
         </dependency>
         <dependency>
             <groupId>us.pente</groupId>
-            <artifactId>pente-graph-auth</artifactId>
+            <artifactId>pente-visallo-auth</artifactId>
         </dependency>
         <dependency>
             <groupId>us.pente</groupId>
-            <artifactId>pente-graph-web</artifactId>
+            <artifactId>pente-visallo-web</artifactId>
         </dependency>
         <dependency>
             <groupId>us.pente</groupId>
-            <artifactId>pente-graph-worker</artifactId>
+            <artifactId>pente-visallo-worker</artifactId>
         </dependency>
     </dependencies>
 

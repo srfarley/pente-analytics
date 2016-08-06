@@ -2,15 +2,12 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <parent>
-        <groupId>us.pente</groupId>
-        <artifactId>pente-graph</artifactId>
-        <version>0.1-SNAPSHOT</version>
-    </parent>
-    <artifactId>pente-graph-spark</artifactId>
+    <groupId>us.pente</groupId>
+    <version>0.1-SNAPSHOT</version>
+    <artifactId>pente-spark</artifactId>
     <packaging>jar</packaging>
 
-    <name>Pente.org Game Database Graph: Apache Spark</name>
+    <name>Pente.org Game Database Analytics: Apache Spark</name>
 
     <dependencies>
         <dependency>
@@ -25,7 +22,8 @@
         </dependency>
         <dependency>
             <groupId>us.pente</groupId>
-            <artifactId>pente-graph-model</artifactId>
+            <artifactId>pente-model</artifactId>
+            <version>0.1-SNAPSHOT</version>
         </dependency>
     </dependencies>
 

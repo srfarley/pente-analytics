@@ -4,15 +4,15 @@
     <option name="MAIN_CLASS_NAME" value="org.visallo.web.JettyWebServer" />
     <option name="VM_PARAMETERS" value="" />
     <option name="PROGRAM_PARAMETERS" value="--webAppDir work/war/visallo-web-war-1.1-SNAPSHOT.war --keyStorePath config/visallo-vm.visallo.org.jks --keyStorePassword password" />
-    <option name="WORKING_DIRECTORY" value="file://$PROJECT_DIR$" />
+    <option name="WORKING_DIRECTORY" value="file://$PROJECT_DIR$/visallo" />
     <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
     <option name="ALTERNATIVE_JRE_PATH" />
     <option name="ENABLE_SWING_INSPECTOR" value="false" />
     <option name="ENV_VARIABLES" />
     <option name="PASS_PARENT_ENVS" value="true" />
-    <module name="pente-graph-deploy" />
+    <module name="pente-visallo-deploy" />
     <envs>
-      <env name="VISALLO_DIR" value="$PROJECT_DIR$/work" />
+      <env name="VISALLO_DIR" value="$PROJECT_DIR$/visallo/work" />
     </envs>
     <method />
   </configuration>

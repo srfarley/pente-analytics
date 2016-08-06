@@ -5,27 +5,23 @@
 
     <parent>
         <groupId>us.pente</groupId>
-        <artifactId>pente-graph</artifactId>
+        <artifactId>pente-visallo</artifactId>
         <version>0.1-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
-    <artifactId>pente-graph-worker</artifactId>
+    <artifactId>pente-visallo-web</artifactId>
     <packaging>jar</packaging>
-    <name>Pente.org Game Database Graph: GPW</name>
+    <name>Pente.org Game Database Analytics: Visallo: Web</name>
 
     <dependencies>
         <dependency>
             <groupId>org.visallo</groupId>
-            <artifactId>visallo-core</artifactId>
+            <artifactId>visallo-web</artifactId>
         </dependency>
         <dependency>
-            <groupId>us.pente</groupId>
-            <artifactId>pente-graph-model</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.vertexium</groupId>
-            <artifactId>vertexium-inmemory</artifactId>
-            <scope>test</scope>
+            <groupId>javax.servlet</groupId>
+            <artifactId>javax.servlet-api</artifactId>
+            <scope>provided</scope>
         </dependency>
     </dependencies>
 </project>

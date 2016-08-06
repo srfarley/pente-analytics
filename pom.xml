@@ -3,24 +3,12 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
-    <parent>
-        <groupId>org.visallo</groupId>
-        <artifactId>visallo-root</artifactId>
-        <version>2.0.0</version>
-    </parent>
     <modelVersion>4.0.0</modelVersion>
     <groupId>us.pente</groupId>
-    <artifactId>pente-graph</artifactId>
+    <artifactId>pente-analytics</artifactId>
     <version>0.1-SNAPSHOT</version>
     <packaging>pom</packaging>
-    <name>Pente.org Game Database Graph</name>
-
-    <properties>
-        <java.source.version>1.8</java.source.version>
-        <java.target.version>1.8</java.target.version>
-        <visallo.version>2.0.0</visallo.version>
-        <visallo.dir>${project.basedir}/work</visallo.dir>
-    </properties>
+    <name>Pente.org Game Database Analytics</name>
 
     <repositories>
         <repository>
@@ -37,86 +25,22 @@
     </repositories>
 
     <modules>
-        <module>auth</module>
-        <module>deploy</module>
         <module>model</module>
         <module>spark</module>
-        <module>web</module>
-        <module>worker</module>
+        <module>visallo</module>
     </modules>
 
-    <dependencies>
-        <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <version>4.12</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.mockito</groupId>
-            <artifactId>mockito-core</artifactId>
-            <version>1.10.19</version>
-            <scope>test</scope>
-        </dependency>
-    </dependencies>
-
-    <dependencyManagement>
-        <dependencies>
-            <dependency>
-                <groupId>us.pente</groupId>
-                <artifactId>pente-graph-auth</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>us.pente</groupId>
-                <artifactId>pente-graph-deploy</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>us.pente</groupId>
-                <artifactId>pente-graph-model</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>us.pente</groupId>
-                <artifactId>pente-graph-web</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>us.pente</groupId>
-                <artifactId>pente-graph-worker</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.visallo</groupId>
-                <artifactId>visallo-core</artifactId>
-                <version>${visallo.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.visallo</groupId>
-                <artifactId>visallo-web</artifactId>
-                <version>${visallo.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.visallo</groupId>
-                <artifactId>visallo-dev-jetty-server</artifactId>
-                <version>${visallo.version}</version>
-            </dependency>
-        </dependencies>
-    </dependencyManagement>
-
     <build>
-        <plugins>
-            <plugin>
-                <groupId>org.eclipse.jetty</groupId>
-                <artifactId>jetty-maven-plugin</artifactId>
-                <version>9.3.8.v20160314</version>
-                <inherited>false</inherited>
-                <configuration>
-                    <war>${visallo.dir}/war/visallo-web-war-${visallo.version}.war</war>
-                    <scanIntervalSeconds>10</scanIntervalSeconds>
-                </configuration>
-            </plugin>
-        </plugins>
-    </build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>3.5.1</version>
+        <configuration>
+          <source>1.8</source>
+          <target>1.8</target>
+        </configuration>
+      </plugin>
+    </plugins>
+</build>
 </project>
