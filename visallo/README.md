@@ -1,8 +1,8 @@
-# Pente Graph [![Build Status](https://travis-ci.org/srfarley/pente-graph.svg?branch=master)](https://travis-ci.org/srfarley/pente-graph)
+# Pente Game Analytics with Visallo
 Visualize and analyze [Pente.org](http://pente.org) games using [Visallo](http://www.visallo.com).
 
 ## What is This?
-This project uses the [open-source](https://github.com/v5analytics/visallo) version of Visallo to search games and to provide a visual graph showing win/loss relationships between Pente games and players.
+This sub-project uses the [open-source](https://github.com/v5analytics/visallo) version of Visallo to search games and to provide a visual graph showing win/loss relationships between Pente games and players.
 
 ## Requirements
 Pente Graph is a Java 8 web application which uses Maven for building and running. You will need to install [JDK 8](http://www.oracle.com/technetwork/java/javase/downloads/index.html) and [Maven 3.3.x](https://maven.apache.org/install.html) to run it on your own computer. The supported web browsers are Chrome, Firefox, and Safari.
