@@ -67,20 +67,6 @@
                         </goals>
                     </execution>
                     <execution>
-                        <id>copy-libs</id>
-                        <configuration>
-                            <outputDirectory>${visallo.dir}/lib</outputDirectory>
-                            <excludeClassifiers>war</excludeClassifiers>
-                            <includeScope>runtime</includeScope>
-                            <excludeScope>test</excludeScope>
-                            <overWriteSnapshots>true</overWriteSnapshots>
-                        </configuration>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>copy-dependencies</goal>
-                        </goals>
-                    </execution>
-                    <execution>
                         <id>copy-visallo-configs</id>
                         <configuration>
                             <outputDirectory>${visallo.dir}/config</outputDirectory>
@@ -163,4 +149,42 @@
             </plugin>
         </plugins>
     </build>
+    <profiles>
+        <profile>
+            <id>run</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.codehaus.mojo</groupId>
+                        <artifactId>exec-maven-plugin</artifactId>
+                        <version>${plugin.maven.exec.version}</version>
+                        <executions>
+                            <execution>
+                                <goals>
+                                    <goal>java</goal>
+                                </goals>
+                                <phase>package</phase>
+                            </execution>
+                        </executions>
+                        <configuration>
+                            <mainClass>org.visallo.web.JettyWebServer</mainClass>
+                            <systemProperties>
+                                <systemProperty>
+                                    <key>VISALLO_DIR</key>
+                                    <value>${visallo.dir}</value>
+                                </systemProperty>
+                            </systemProperties>
+                            <commandlineArgs>
+                                --webAppDir ${visallo.dir}/war/visallo-web-war-${visallo.version}.war
+                                --port 8080
+                                --httpsPort 8443
+                                --keyStorePath ${visallo.dir}/config/visallo-vm.visallo.org.jks
+                                --keyStorePassword password
+                            </commandlineArgs>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
 </project>

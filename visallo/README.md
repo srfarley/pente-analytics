@@ -11,10 +11,10 @@ Pente Graph is a Java 8 web application which uses Maven for building and runnin
 
 ### Run Visallo
 
-1. Build: `mvn package`
+1. Build: From this sub-project directory, execute `mvn -f .. install`. This only needs to be done once.
 1. Run:`./run.sh`
 1. Browse: [http://localhost:8080](http://localhost:8080)
-1. Login using a username that you choose. No password is needed with this default configuration.
+1. Login using your Pente.org username and password.
 
 ### Import Pente Game Archives
 
