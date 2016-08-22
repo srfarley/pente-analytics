@@ -7,6 +7,7 @@ import com.v5analytics.webster.annotations.Handle;
 import com.v5analytics.webster.annotations.Required;
 import org.json.JSONObject;
 import org.visallo.core.exception.VisalloAccessDeniedException;
+import org.visallo.core.model.user.UserNameAuthorizationContext;
 import org.visallo.core.model.user.UserRepository;
 import org.visallo.core.user.User;
 import org.visallo.web.AuthenticationHandler;
@@ -49,7 +50,9 @@ public class Login implements ParameterizedHandler {
 
         if (isValidPenteOrgUser(username, password)) {
             User user = findOrCreateUser(username);
-            userRepository.recordLogin(user, AuthenticationHandler.getRemoteAddr(request));
+            UserNameAuthorizationContext authorizationContext =
+                    new UserNameAuthorizationContext(username, AuthenticationHandler.getRemoteAddr(request));
+            userRepository.updateUser(user, authorizationContext);
             CurrentUser.set(request, user.getUserId(), user.getUsername());
             JSONObject json = new JSONObject();
             json.put("status", "OK");
@@ -64,14 +67,7 @@ public class Login implements ParameterizedHandler {
         if (user == null) {
             // For form based authentication, username and displayName will be the same
             String randomPassword = UserRepository.createRandomPassword();
-            user = userRepository.findOrAddUser(
-                    username,
-                    username,
-                    null,
-                    randomPassword,
-                    userRepository.getDefaultPrivileges(),
-                    userRepository.getDefaultAuthorizations()
-            );
+            user = userRepository.findOrAddUser(username, username, null, randomPassword);
         }
         return user;
     }
