@@ -16,7 +16,7 @@
     <name>Pente.org Game Database Analytics: Visallo</name>
 
     <properties>
-        <visallo.version>2.1.1</visallo.version>
+        <visallo.version>2.1.2</visallo.version>
     </properties>
 
     <repositories>
