@@ -102,7 +102,7 @@
     <owl:DatatypeProperty rdf:about="http://pente.us/pente#gameName">
         <rdfs:label>Game Name</rdfs:label>
         <visallo:textIndexHints>EXACT_MATCH</visallo:textIndexHints>
-        <rdfs:domain rdf:resource="http://pente.us/pente#player"/>
+        <rdfs:domain rdf:resource="http://pente.us/pente#game"/>
         <rdfs:range rdf:resource="&xsd;string"/>
     </owl:DatatypeProperty>
 
