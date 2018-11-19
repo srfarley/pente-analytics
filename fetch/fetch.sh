@@ -1,3 +1,3 @@
 #!/bin/sh
-# Run like: ./fetch.sh --username=<username>,--password=<password>,--total=<total>
-mvn spring-boot:run -Dspring-boot.run.arguments=$@
+# Run with: ./fetch.sh <username> <password> <total>
+./node_modules/.bin/ts-node fetch.ts $@
