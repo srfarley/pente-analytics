@@ -1,0 +1,19 @@
+{
+  "name": "fetch-pente-org-games",
+  "version": "1.0.0",
+  "description": "CLI to download game archives from pente.org",
+  "main": "index.js",
+  "scripts": {},
+  "author": "Steven R. Farley",
+  "license": "Apache-2.0",
+  "dependencies": {
+    "axios": "^0.18.0",
+    "csv-writer": "^1.2.0",
+    "export-to-csv": "^0.1.2"
+  },
+  "devDependencies": {
+    "ts-node": "^7.0.1",
+    "typescript": "^3.1.6",
+    "@types/node": "^10.12.9"
+  }
+}

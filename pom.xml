@@ -24,7 +24,6 @@
     </repositories>
 
     <modules>
-        <module>fetch</module>
         <module>model</module>
         <module>spark</module>
     </modules>
